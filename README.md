@@ -1,11 +1,11 @@
-# React Hacker
+# DJ Wolf
 
-A simple React starter that's perfect for messing around. Comes with Babel, Emotion CSS in JS, ESlint, and Prettier.
+An experimental music manager to combine multiple music providers under one platform.
 
 # Use
 
-- `git clone https://github.com/DZuz14/react-hacker.git`
-- `cd react-hacker`
+- `git clone https://github.com/adimessi30/dj_wolf.git dj_wolf`
+- `cd dj_wolf`
 - `npm i`
 - `npm start`
 
