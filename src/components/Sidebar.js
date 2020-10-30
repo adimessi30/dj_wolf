@@ -1,10 +1,17 @@
 /** @jsx jsx */
-import React, { useState, useRef, useContext } from 'react'
+import { useState, useRef } from 'react'
 import { css, jsx } from '@emotion/core'
-import { StoreContext } from './index'
 import Modal from './Modal'
 import Toast from './Toast'
-import logo from '../../img/new_howl.png'
+import logo from '../img/new_howl.png'
+import {
+  GlobalContext,
+  useGlobalContext
+} from '../context/GlobalContextProvider'
+import {
+  addPlaylistHelper,
+  setCurrentPlaylistHelper
+} from '../FireStoreAccessor/fireStoreHelper'
 
 const Sidebar = () => {
   const [sidebarState, setState] = useState({
@@ -12,19 +19,16 @@ const Sidebar = () => {
     toast: ''
   })
 
-  const { state, dispatch } = useContext(StoreContext)
+  const [{ _, currentPlaylist, allPlaylists }, __] = useGlobalContext(
+    GlobalContext
+  )
 
   const playlistRef = useRef(null)
-  const playlists = Object.keys(state.playlists)
 
   const addPlaylist = e => {
     e.preventDefault()
-    const list = playlistRef.current.value
-
-    dispatch({ type: 'ADD_PLAYLIST', playlist: list })
-
+    addPlaylistHelper(allPlaylists, playlistRef.current.value)
     setState({
-      ...sidebarState,
       modal: false,
       toast: 'Your playlist was created successfully!'
     })
@@ -37,13 +41,15 @@ const Sidebar = () => {
     <ul className="Sidebar" css={CSS}>
       <img src={logo} />
       <li className="library">Library</li>
-      {playlists.map(list => (
+      {Object.keys(allPlaylists).map(playlist => (
         <li
-          key={list}
-          className={list === state.currentPlaylist ? 'active' : ''}
-          onClick={() => dispatch({ type: 'SET_PLAYLIST', playlist: list })}
+          key={playlist}
+          className={playlist === currentPlaylist ? 'active' : ''}
+          onClick={() =>
+            setCurrentPlaylistHelper(allPlaylists, currentPlaylist, playlist)
+          }
         >
-          {list}
+          {playlist}
         </li>
       ))}
       <li
