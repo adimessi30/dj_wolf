@@ -3,3 +3,4 @@ dist/*
 yarn.lock
 .vscode
 src/scripts/creds.json
+src/FireStoreAccessor/fireStoreConfig.js
